@@ -15,6 +15,8 @@
       background-size: cover;
       display: flex;
       flex-direction: column;
+      overflow-x: hidden;
+      transition: all 1s ease;
     }
 
     h1, p, footer {
@@ -23,29 +25,39 @@
 
     header {
       padding: 100px 20px 40px;
+      animation: fadeInDown 1s ease-out;
     }
 
-    h1 {
-      margin: 0;
-      font-size: 3.5em;
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-50px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    header p {
-      font-size: 1.6em;
-      margin-top: 15px;
-    }
-
+    h1 { margin: 0; font-size: 3.5em; }
+    header p { font-size: 1.6em; margin-top: 15px; }
     .slogan {
       font-size: 1.2em;
       font-style: italic;
       margin-top: 10px;
       color: #f0f0f0;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
     }
 
     main {
       padding: 60px 20px 40px;
       flex: 1;
       background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0,0,0,0.6));
+      animation: fadeInUp 1.5s ease-out;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(50px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     p {
@@ -62,14 +74,17 @@
       color: white;
       text-decoration: none;
       border-radius: 6px;
-      transition: background-color 0.3s ease;
+      transition: all 0.4s ease;
       box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
-      z-index: 1;
       position: relative;
+      overflow: hidden;
+      z-index: 1;
     }
 
     .button:hover {
       background-color: #005f7f;
+      transform: scale(1.1) rotate(2deg);
+      box-shadow: 0 0 20px #00d4ff, 0 0 30px #00d4ff;
     }
 
     .features {
@@ -85,50 +100,79 @@
     .feature {
       position: relative;
       background-color: rgba(255, 255, 255, 0.1);
-      padding: 20px 25px;
-      border-radius: 8px;
+      padding: 25px;
+      border-radius: 10px;
       font-size: 1.1em;
-      min-width: 180px;
-      backdrop-filter: blur(5px);
+      min-width: 200px;
+      backdrop-filter: blur(6px);
       text-shadow: none;
       color: #fff;
       cursor: pointer;
-      transition: transform 0.3s ease;
+      transition: transform 0.4s ease, background-color 0.4s ease, box-shadow 0.4s ease;
+      overflow: hidden;
     }
 
     .feature:hover {
-      transform: translateY(-3px);
+      transform: scale(1.05) rotate(1deg);
+      background-color: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 0 20px #ffffffaa;
+      animation: bounce 1s;
     }
 
+    @keyframes bounce {
+      0%, 100% { transform: scale(1.05) rotate(1deg) translateY(0); }
+      50% { transform: scale(1.1) rotate(1deg) translateY(-10px); }
+    }
+
+    /* Tooltip styling */
     .feature-info {
-      opacity: 0;
-      visibility: hidden;
       position: absolute;
       top: 100%;
-      left: 0;
-      right: 0;
-      margin-top: 10px;
+      left: 50%;
+      transform: translateX(-50%) translateY(10px);
       background-color: rgba(0, 0, 0, 0.85);
-      padding: 15px;
-      border-radius: 6px;
+      padding: 15px 20px;
+      border-radius: 8px;
       font-size: 0.95em;
       line-height: 1.4;
-      transition: opacity 0.4s ease, transform 0.3s ease;
-      transform: translateY(10px);
-      z-index: 10;
+      width: 230px;
+      text-align: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
       pointer-events: none;
     }
 
     .feature:hover .feature-info {
       opacity: 1;
       visibility: visible;
-      transform: translateY(0);
+      transform: translateX(-50%) translateY(0);
     }
 
     footer {
       padding: 20px;
       font-size: 0.9em;
+      animation: fadeIn 2s ease-out;
     }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* BOMB Explosion Animation */
+    .explode {
+      animation: explodeAnim 2s forwards;
+    }
+
+    @keyframes explodeAnim {
+      0% { transform: scale(1) rotate(0deg); opacity: 1; }
+      20% { transform: scale(1.2) rotate(5deg); }
+      40% { transform: scale(0.8) rotate(-5deg); }
+      60% { transform: scale(1.5) rotate(10deg); opacity: 0.5; }
+      100% { transform: scale(0) rotate(360deg); opacity: 0; }
+    }
+
   </style>
 </head>
 <body>
@@ -145,23 +189,31 @@
     <div class="features">
       <div class="feature">
         🌞 300 Sonnentage im Jahr
-        <div class="feature-info">Kreta gehört zu den sonnigsten Regionen Europas – perfektes Wetter für Strand, Pool und Erkundungstouren!</div>
+        <div class="feature-info">Werde eins mit der Sonne – Vitamin D inklusive!</div>
       </div>
       <div class="feature">
         🏖️ Direkt am Strand
-        <div class="feature-info">Nur ein paar Schritte vom Resort zum türkisblauen Meer. Keine Transfers, kein Stress – nur du und das Wasser.</div>
+        <div class="feature-info">Nur 20 Sekunden und du stehst im Wasser!</div>
       </div>
       <div class="feature">
         🍽️ All-Inclusive Kulinarik
-        <div class="feature-info">Internationale Buffets, griechische Spezialitäten, Cocktails & Snacks rund um die Uhr – Genuss pur!</div>
+        <div class="feature-info">Genieße grenzenloses Schlemmen – ohne aufzustehen!</div>
       </div>
       <div class="feature">
         🌊 7 Pools & Spa-Bereich
-        <div class="feature-info">Ob Familienpool, Adults Only oder Wellness-Oase – hier findest du deinen persönlichen Rückzugsort.</div>
+        <div class="feature-info">Finde deinen Lieblingspool – oder gleich alle!</div>
       </div>
       <div class="feature">
         ✈️ Direkter Flughafentransfer
-        <div class="feature-info">Bequem ankommen – dein Shuttle wartet am Flughafen Heraklion auf dich. Urlaub von der ersten Minute an.</div>
+        <div class="feature-info">Entspannt ankommen, noch entspannter bleiben!</div>
+      </div>
+      <div class="feature">
+        🧘 Yoga am Strand
+        <div class="feature-info">Namaste bei Sonnenaufgang – innerer Frieden garantiert.</div>
+      </div>
+      <div class="feature">
+        🛥️ Private Bootstour
+        <div class="feature-info">Erkunde versteckte Buchten – exklusiv nur für dich!</div>
       </div>
     </div>
   </main>
@@ -169,5 +221,22 @@
   <footer>
     &copy; 2025 Blau statt Grau – Alle Rechte vorbehalten
   </footer>
+
+  <script>
+    let typed = "";
+
+    document.addEventListener('keydown', function(e) {
+      typed += e.key.toLowerCase();
+      if (typed.includes('bomb')) {
+        document.body.classList.add('explode');
+        setTimeout(() => {
+          document.body.innerHTML = '<h1 style="margin-top:50vh; color: #000;">💥 BOOM 💥</h1>';
+          document.body.style.backgroundColor = 'white';
+        }, 2000);
+      }
+      if (typed.length > 10) typed = typed.slice(-10);
+    });
+  </script>
+
 </body>
 </html>

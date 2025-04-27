@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Buchungsseite – Kreta Spa Beach Resort</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      /* Gradient Hintergrund von blauem Himmel zu einem warmen Sonnenuntergang */
+      background: linear-gradient(to bottom right, #0099FF, #FF7F00);
+      margin: 0;
+      padding: 0;
+      color: white;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      justify-content: center;
+      align-items: center;
+      background-attachment: fixed;
+      overflow: hidden;
+    }
+
+    h1, p {
+      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+    }
+
+    .container {
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 30px;
+      border-radius: 10px;
+      width: 80%;
+      max-width: 600px;
+    }
+
+    h1 {
+      font-size: 3em;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 1.2em;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 10px;
+      font-size: 1.1em;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+      box-sizing: border-box;
+    }
+
+    .form-group button {
+      width: 100%;
+      padding: 12px;
+      font-size: 1.2em;
+      background-color: #007ba7;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .form-group button:hover {
+      background-color: #005f7f;
+    }
+
+    .disclaimer {
+      font-size: 0.9em;
+      color: #fff;
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .disclaimer p {
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Jetzt Urlaub buchen!</h1>
+    <p>Fülle das Formular aus und beginne dein Abenteuer im Kreta Spa Beach Resort!</p>
+
+    <form action="#" method="POST">
+      <div class="form-group">
+        <label for="name">Dein Name:</label>
+        <input type="text" id="name" name="name" required placeholder="Max Mustermann">
+      </div>
+
+      <div class="form-group">
+        <label for="email">Deine E-Mail:</label>
+        <input type="email" id="email" name="email" required placeholder="max@mustermann.de">
+      </div>
+
+      <div class="form-group">
+        <label for="date">Reisedatum:</label>
+        <input type="date" id="date" name="date" required>
+      </div>
+
+      <div class="form-group">
+        <label for="package">Wähle dein Paket:</label>
+        <select id="package" name="package" required>
+          <option value="basic">Basic – Nur Unterkunft</option>
+          <option value="luxury">Luxury – Unterkunft + Spa + All-Inclusive</option>
+          <option value="premium">Premium – Alles inklusive + Exklusive Extras</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <button type="submit">Buchen</button>
+      </div>
+    </form>
+
+    <div class="disclaimer">
+      <p><strong>Wichtiger Hinweis:</strong></p>
+      <p>Diese Buchungsseite ist nur eine Demo-Seite. Keine echten Daten werden gespeichert oder verarbeitet. Alles hier ist fiktiv und für unterhaltsame Zwecke gedacht.</p>
+    </div>
+  </div>
+
+</body>
+</html>
