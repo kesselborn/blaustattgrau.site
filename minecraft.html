@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minecraft Quiz</title>
+    <style>
+        body {
+            font-family: 'Minecraft', sans-serif;
+            background-color: #1d1d1d;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        header {
+            background-color: #76b041;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            font-size: 36px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+        }
+
+        .container {
+            text-align: center;
+            padding: 40px;
+        }
+
+        button {
+            background-color: #9b9b9b;
+            color: white;
+            border: 2px solid #666;
+            font-size: 20px;
+            padding: 15px 35px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            margin: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+            font-family: 'Minecraft', sans-serif;
+            transition: all 0.3s ease-in-out;
+        }
+
+        button:hover {
+            background-color: #76b041;
+            border-color: #4a6e27;
+            transform: scale(1.1);
+        }
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+            font-size: 14px;
+        }
+
+        @font-face {
+            font-family: 'Minecraft';
+            src: url('https://fonts.cdnfonts.com/s/42418/Minecraft.ttf');
+        }
+
+        .quiz-container {
+            display: none;
+        }
+
+        .question {
+            font-size: 24px;
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+        }
+
+        .answer {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            margin: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            border: 2px solid #444;
+            transition: all 0.3s ease-in-out;
+            transform: scale(1);
+        }
+
+        .answer:hover {
+            background-color: #76b041;
+            transform: scale(1.1);
+        }
+
+        .incorrect {
+            background-color: #e74c3c;
+        }
+
+        .correct {
+            background-color: #2ecc71;
+        }
+
+        .answers-container {
+            text-align: left;
+            margin-top: 30px;
+            opacity: 0;
+            animation: slideIn 1s forwards;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            0% { opacity: 0; transform: translateX(-100%); }
+            100% { opacity: 1; transform: translateX(0); }
+        }
+
+        #score {
+            font-size: 26px;
+            font-weight: bold;
+            margin-top: 20px;
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+        }
+
+        .result-summary p {
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+        }
+
+        /* Green and Red Screen effect */
+        .green-screen, .red-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            display: none;
+            z-index: 1000;
+            animation: colorFlash 0.5s forwards;
+        }
+
+        .green-screen {
+            background-color: rgba(0, 255, 0, 0.5);
+        }
+
+        .red-screen {
+            background-color: rgba(255, 0, 0, 0.5);
+        }
+
+        @keyframes colorFlash {
+            0% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        Minecraft Quiz - Wähle deine Schwierigkeitsstufe
+    </header>
+
+    <div class="container">
+        <h2>Wähle eine Schwierigkeitsstufe</h2>
+        <button onclick="startQuiz('easy')">Einfach</button>
+        <button onclick="startQuiz('medium')">Mittel</button>
+        <button onclick="startQuiz('hard')">Schwierig</button>
+    </div>
+
+    <div id="quiz-container" class="quiz-container">
+        <div id="question-container">
+            <p class="question"></p>
+            <button class="answer" onclick="answer('a')">Antwort A</button>
+            <button class="answer" onclick="answer('b')">Antwort B</button>
+            <button class="answer" onclick="answer('c')">Antwort C</button>
+            <button class="answer" onclick="answer('d')">Antwort D</button>
+        </div>
+        <div id="result-container" style="display: none;">
+            <p id="score"></p>
+            <div id="answers-summary" class="answers-container"></div>
+        </div>
+    </div>
+
+    <div id="green-screen" class="green-screen"></div>
+    <div id="red-screen" class="red-screen"></div>
+
+    <footer>
+        <p>&copy; 2025 Minecraft Quiz. Alle Rechte vorbehalten.</p>
+    </footer>
+
+    <script>
+        let currentQuiz, currentQuestionIndex, score, userAnswers;
+        const easyQuestions = [
+            {
+                question: "Wie heißt der Hauptcharakter in Minecraft?",
+                answers: {
+                    a: "Steve",
+                    b: "Alex",
+                    c: "Herobrine",
+                    d: "Notch"
+                },
+                correct: 'a'
+            },
+            {
+                question: "Welches dieser Materialien ist ein Rohstoff in Minecraft?",
+                answers: {
+                    a: "Diamant",
+                    b: "Schwamm",
+                    c: "Lava",
+                    d: "Magmablock"
+                },
+                correct: 'a'
+            },
+            {
+                question: "Welches Tier kann in Minecraft gezähmt werden?",
+                answers: {
+                    a: "Kuh",
+                    b: "Hund",
+                    c: "Schaf",
+                    d: "Schwamm"
+                },
+                correct: 'b'
+            },
+            {
+                question: "Was benutzt man zum Craften eines Werkzeugs?",
+                answers: {
+                    a: "Holz",
+                    b: "Stein",
+                    c: "Metall",
+                    d: "Alle oben genannten"
+                },
+                correct: 'd'
+            }
+        ];
+        const mediumQuestions = [
+            {
+                question: "Wie heißt der Gegner, der das Nether bewohnt?",
+                answers: {
+                    a: "Enderman",
+                    b: "Zombie",
+                    c: "Wither",
+                    d: "Ghast"
+                },
+                correct: 'd'
+            },
+            {
+                question: "Was ist das wertvollste Material in Minecraft?",
+                answers: {
+                    a: "Gold",
+                    b: "Diamant",
+                    c: "Netherite",
+                    d: "Emerald"
+                },
+                correct: 'c'
+            },
+            {
+                question: "Welche Pflanze gibt es nur im Nether?",
+                answers: {
+                    a: "Kaktus",
+                    b: "Netherwart",
+                    c: "Weizen",
+                    d: "Pilze"
+                },
+                correct: 'b'
+            },
+            {
+                question: "Wie viele Blöcke weit kann ein Enderperle fliegen?",
+                answers: {
+                    a: "10",
+                    b: "20",
+                    c: "30",
+                    d: "50"
+                },
+                correct: 'b'
+            }
+        ];
+        const hardQuestions = [
+            {
+                question: "Welche dieser Zutaten ist erforderlich, um ein Enderauge zu craften?",
+                answers: {
+                    a: "Glas",
+                    b: "Enderperle",
+                    c: "Drachenatem",
+                    d: "Leder"
+                },
+                correct: 'b'
+            },
+            {
+                question: "Wie heißt der Endboss in Minecraft?",
+                answers: {
+                    a: "Enderdragon",
+                    b: "Wither",
+                    c: "The Pigman",
+                    d: "Herobrine"
+                },
+                correct: 'a'
+            },
+            {
+                question: "Was benötigt man, um eine Netherfestung zu finden?",
+                answers: {
+                    a: "Enderauge",
+                    b: "Kartographenkarte",
+                    c: "Nethersterne",
+                    d: "Blaze Powder"
+                },
+                correct: 'a'
+            },
+            {
+                question: "Wie viele Nethersterne benötigt man, um ein Beacon zu bauen?",
+                answers: {
+                    a: "1",
+                    b: "3",
+                    c: "5",
+                    d: "10"
+                },
+                correct: 'b'
+            }
+        ];
+
+        function startQuiz(difficulty) {
+            currentQuiz = difficulty;
+            score = 0;
+            userAnswers = [];
+            currentQuestionIndex = 0;
+
+            switch (difficulty) {
+                case 'easy':
+                    currentQuestions = easyQuestions;
+                    break;
+                case 'medium':
+                    currentQuestions = mediumQuestions;
+                    break;
+                case 'hard':
+                    currentQuestions = hardQuestions;
+                    break;
+            }
+
+            document.querySelector(".container").style.display = 'none';
+            document.getElementById("quiz-container").style.display = 'block';
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            const question = currentQuestions[currentQuestionIndex];
+            document.querySelector(".question").textContent = question.question;
+            document.querySelectorAll(".answer").forEach((button, index) => {
+                const answerKey = Object.keys(question.answers)[index];
+                button.textContent = question.answers[answerKey];
+                button.onclick = () => answer(answerKey);
+            });
+        }
+
+        function answer(selected) {
+            const correctAnswer = currentQuestions[currentQuestionIndex].correct;
+            userAnswers.push({
+                question: currentQuestions[currentQuestionIndex].question,
+                selected: selected,
+                correctAnswer: correctAnswer
+            });
+
+            if (selected === correctAnswer) {
+                score++;
+                document.getElementById("green-screen").style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById("green-screen").style.display = 'none';
+                }, 500);
+            } else {
+                document.getElementById("red-screen").style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById("red-screen").style.display = 'none';
+                }, 500);
+            }
+
+            currentQuestionIndex++;
+            if (currentQuestionIndex < currentQuestions.length) {
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            document.getElementById("question-container").style.display = 'none';
+            const resultText = `Du hast ${score} von ${currentQuestions.length} Punkten erreicht!`;
+            document.getElementById("score").textContent = resultText;
+            document.getElementById("result-container").style.display = 'block';
+
+            let summaryHTML = '';
+            userAnswers.forEach(answer => {
+                const isCorrect = answer.selected === answer.correctAnswer;
+                summaryHTML += `
+                    <p>${answer.question}<br>
+                    Deine Antwort: <span class="${isCorrect ? 'correct' : 'incorrect'}">${answer.selected.toUpperCase()}</span><br>
+                    Richtige Antwort: <span class="correct">${answer.correctAnswer.toUpperCase()}</span></p>
+                `;
+            });
+            document.getElementById("answers-summary").innerHTML = summaryHTML;
+        }
+    </script>
+
+</body>
+</html>

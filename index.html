@@ -160,19 +160,27 @@
       to { opacity: 1; }
     }
 
-    /* BOMB Explosion Animation */
-    .explode {
-      animation: explodeAnim 2s forwards;
+    /* Styling für die Textbox */
+    .input-box {
+      position: fixed;
+      bottom: 20px;
+      width: 80%;
+      text-align: center;
+      left: 50%;
+      transform: translateX(-50%);
     }
 
-    @keyframes explodeAnim {
-      0% { transform: scale(1) rotate(0deg); opacity: 1; }
-      20% { transform: scale(1.2) rotate(5deg); }
-      40% { transform: scale(0.8) rotate(-5deg); }
-      60% { transform: scale(1.5) rotate(10deg); opacity: 0.5; }
-      100% { transform: scale(0) rotate(360deg); opacity: 0; }
+    .input-box input {
+      padding: 10px;
+      width: 80%;
+      font-size: 1.2em;
+      border-radius: 5px;
+      border: none;
+      background-color: #333;
+      color: white;
+      text-align: center;
+      outline: none;
     }
-
   </style>
 </head>
 <body>
@@ -222,19 +230,17 @@
     &copy; 2025 Blau statt Grau – Alle Rechte vorbehalten
   </footer>
 
-  <script>
-    let typed = "";
+  <!-- Textbox für Eingabe -->
+  <div class="input-box">
+    <input type="text" id="user-input" />
+  </div>
 
-    document.addEventListener('keydown', function(e) {
-      typed += e.key.toLowerCase();
-      if (typed.includes('bomb')) {
-        document.body.classList.add('explode');
-        setTimeout(() => {
-          document.body.innerHTML = '<h1 style="margin-top:50vh; color: #000;">💥 BOOM 💥</h1>';
-          document.body.style.backgroundColor = 'white';
-        }, 2000);
+  <script>
+    document.getElementById('user-input').addEventListener('input', function() {
+      var userInput = this.value.toLowerCase();
+      if (userInput === 'minecraft') {
+        window.location.href = 'minecraft.html'; // Weiterleitung zu minecraft.html
       }
-      if (typed.length > 10) typed = typed.slice(-10);
     });
   </script>
 
